@@ -4,3 +4,4 @@ log.lammps
 *.ca
 *.vtk
 cleanup.sh
+__pycache__
