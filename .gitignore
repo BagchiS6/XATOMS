@@ -5,3 +5,6 @@ log.lammps
 *.vtk
 cleanup.sh
 __pycache__
+postprocessors/__pycache__
+structure_generators/__pycache__
+task_lib/__pycache__
