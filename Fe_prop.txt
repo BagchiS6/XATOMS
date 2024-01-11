@@ -1,0 +1,11 @@
+#Properties 
+#Elastic constants (GPa)
+elastic Voigt
+243.0 243.0 243.0  #C11 C22 C33
+145.0 145.0 145.0   #C23 C31 C12
+119.0 119.0 119.0  #C44 C55 C66
+#Crystallographic orientation of the block (this will rotate the elastic tensor accordingly)
+orientation
+-1_-2_1
+1_-1_-1
+1_0_1

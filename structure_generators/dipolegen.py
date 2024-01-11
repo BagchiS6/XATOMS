@@ -17,14 +17,16 @@ def modify_unit_vector(x):
     
 def read_lmp_data(filepath):
     
+    TEMP_FILE='.core'
+
     with open(filepath, 'r') as file:
         lines = file.readlines()
         atoms = lines[15:]
 
-    with open('.core', 'w') as file:
+    with open(TEMP_FILE, 'w') as file:
         file.write('id type x y z\n')
         file.writelines(atoms)
-    return pd.read_csv(filepath_or_buffer='core', sep='\s+')
+    return pd.read_csv(filepath_or_buffer=TEMP_FILE, sep='\s+')
 
     
 class GenDipole:
@@ -243,7 +245,7 @@ elastic Voigt
 
         # Resetting ids in case of deleted atoms
         if reset_ids:
-            Xnn.id = np.arange(1,len(Xnn.id)+1, dtype=int)
+            Xnn.loc[:,'id'] = np.arange(1,len(Xnn.id)+1, dtype=int)
 
         # Write lmp output
 
