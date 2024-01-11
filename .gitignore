@@ -3,3 +3,4 @@ log.lammps
 *.lmp 
 *.ca
 *.vtk
+cleanup.sh
