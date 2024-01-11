@@ -1,0 +1,5 @@
+md_metadata/
+log.lammps
+*.lmp 
+*.ca
+*.vtk

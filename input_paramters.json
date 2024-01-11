@@ -1,0 +1,21 @@
+{   "species" : ["Fe"],
+    "temperature": 300,
+    "rss": 1.0,
+    "dipole_orientation": 0,
+    "rotate_stress": true,
+    "structure": "md_metadata/pbc_correct_dipole.lmp",
+    "stress_info": "md_metadata/applied_stress.csv", 
+    "potential_style": "eam/fs",
+    "potential_file": "md_metadata/Fe_2.eam.fs",
+    "lattice": "BCC",
+    "run_on_gpus": false,
+    "md_procs": 4,
+    "i_o_freq": 100,
+    "total_number_of_timesteps": 900,
+    "dxa_analysis": true,
+    "dxa_line_sep": 15,
+    "dxa_output_formats": ["ca", "vtk"],
+    "full_trajectory_dump": true,
+    "trajectory_output_format": ["lammps/dump"]
+
+}
