@@ -2,8 +2,8 @@
 
 from mpi4py import MPI
 import json
-from task_lib.MDSubprocess import *
-from task_lib.AnalysisSubprocess import *
+from XATOMS.task_lib.MDSubprocess import *
+from XATOMS.task_lib.AnalysisSubprocess import *
 import sys
 
 
@@ -46,4 +46,5 @@ if __name__=='__main__':
         comm.barrier()
         if me == 0:
                 print ('Existing Simulation Environment')
+        MPI.Finalize()
         

@@ -2,7 +2,7 @@
 from lammps import lammps
 import numpy as np
 import math
-from utils import preprocessors
+from XATOMS.utils import preprocessors
 
 
 def MDSubprocess(split, comm, input_params):

@@ -1,4 +1,4 @@
-from postprocessors.ovito_calculators import OvitoCalculators
+from XATOMS.postprocessors.ovito_calculators import OvitoCalculators
 import math
 
 def AnalysisSubprocess(comm, input_params):
