@@ -8,3 +8,9 @@ __pycache__
 postprocessors/__pycache__
 structure_generators/__pycache__
 task_lib/__pycache__
+dist/XATOMS-0.0.1-py3.11.egg
+XATOMS.egg-info/dependency_links.txt
+XATOMS.egg-info/PKG-INFO
+XATOMS.egg-info/SOURCES.txt
+XATOMS.egg-info/top_level.txt
+.DS_Store

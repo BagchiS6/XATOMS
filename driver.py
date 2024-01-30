@@ -9,7 +9,7 @@ import sys
 
 if __name__=='__main__':
         """
-        "srun/mpirun -n <num_procs> python manager.py input_paramters.json"
+        "srun/mpirun -n <num_procs> python driver.py input_paramters.json"
         """
 
         # Load input paramters from a json file
