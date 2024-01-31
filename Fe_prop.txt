@@ -6,6 +6,6 @@ elastic Voigt
 119.0 119.0 119.0  #C44 C55 C66
 #Crystallographic orientation of the block (this will rotate the elastic tensor accordingly)
 orientation
--1_-2_1
-1_-1_-1
+1_-2_-1
+1_1_-1
 1_0_1
