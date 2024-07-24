@@ -1,0 +1,40 @@
+
+units real
+dimension 3
+boundary p p f
+atom_style charge
+box tilt large
+processors * * 1
+
+
+read_data melt_on_substrate.lmp
+replicate 2 2 1
+
+
+pair_style reax/c NULL safezone 16.0 mincap 2400
+pair_coeff * * ffield_start Mo S
+
+fix 1 all qeq/reax 1 0.0 10.0 1.0e-6 reax/c
+
+thermo 10
+thermo_style custom step temp pe lx 
+
+
+#------------specify upper layer-------
+region upperlayer_reg block EDGE EDGE EDGE EDGE 5.0 EDGE units box
+group  upperlayer region upperlayer_reg
+
+#------------------- BOUNDARY CONDITIONS
+fix wallhi all wall/lj93 zhi EDGE 1.0 1.0 2.5 units box
+fix walllo all wall/lj93 zlo EDGE 1.0 1.0 2.5 units box
+#------------------------------------------------------#
+#-------------NPT at Room Temp-------------------------#
+fix relax all npt temp 300 300 100 x 0 0 10 y 0 0 10 xy 0 0 10
+timestep 0.5
+run 100 #50000
+unfix relax
+variable step equal "step"
+variable temp equal "temp"
+fix writer all print 1000 "${step} ${temp}" title "Step Temperature (K)" file temp_step.txt
+
+

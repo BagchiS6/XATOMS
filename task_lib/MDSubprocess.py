@@ -32,6 +32,38 @@ def MDSubprocess(split, comm, input_params):
                 except:
                         comm.Abort(1)
 
+        if 'lattice_strain' in input_params.keys():
+                if 'shear_strain' in input_params.keys():
+                        lmp.command(f"change_box all x scale ${input_params['lattice_strain']} y scale ${input_params['lattice_strain']} xy final ${input_params['shear_strain']} remap units box ")
+                else:
+                        lmp.command(f"change_box all x scale ${input_params['lattice_strain']} y scale ${input_params['lattice_strain']} remap units box ")
+        elif 'shear_strain' in input_params.keys():
+                lmp.command(f"change_box all xy final ${input_params['shear_strain']} remap units box ")
+
+
+        if 'heat' in input_params.keys():
+                lmp.command(f'fix heat all langevin ${input_params['heat']['T_heat']} ${input_params['heat']['T_heat']} 50 12345')
+                lmp.command('fix ensemble all nve')
+                try:
+                        if 'verlet_delta_t' in input_params.keys():
+                                lmp.command(f'timestep {input_params['verlet_delta_t']}')
+                        else:
+                                print ("No Verlet Time-Step (delta_t) is specified). Will be using default value of 0.1. But this could be spurious--> so please specify!")
+
+                        lmp.command(f'run {input_params['heat']['heat_timesteps']}')
+                        lmp.command('unfix heat')
+                except:
+                        pass # this is the "interesting dynamics" for on-the-fly analysis!
+
+        
+        if 'quench' in input_params.keys():
+                lmp.command(f'fix quench all langevin ${input_params['heat']['T_heat']} ${input_params['quench']['T_quench']} 50 12345')
+                try:
+                        lmp.command(f'run {input_params['quench']['quench_timesteps']}')
+                except:
+                        pass # this is the "interesting dynamics" for on-the-fly analysis!
+
+
         """
         resetting timestep to zero assuming 
         that "interesting" dynamic simulations begin now

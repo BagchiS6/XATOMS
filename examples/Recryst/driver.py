@@ -19,9 +19,13 @@ if __name__=='__main__':
         except Exception as e:
                 raise SyntaxError("Correct systax:\
                                   srun/mpirun -n <num_procs> python manager.py input_paramters.json")
+        
+        try:
 
-        with open(input_paramters_file,'r') as file:
-                input_params=json.load(file)
+                with open(input_paramters_file,'r') as file:
+                        input_params=json.load(file)
+        except:
+                input_params=json.loads(input_paramters_file)
 
         # Get rank details
         comm = MPI.COMM_WORLD
