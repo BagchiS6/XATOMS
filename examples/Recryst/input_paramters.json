@@ -1,4 +1,5 @@
-{   "lammps_input": "in.recryst",
+{   "species" : ["Mo", "S"],
+    "lammps_input": "in.recryst",
     "verlet_delta_t": 0.5,
     "heat": {"T_heat":2000, "heat_timesteps": 100},
     "lattice_strain": 1.02,
@@ -9,7 +10,7 @@
     "i_o_freq": 10,
     "total_number_of_timesteps": 1200,
     "compute_twist": {"cutoff": 4, "id_1": 163, "id_2": 164, "reference_particle_type": 2, "num_iter": 10},
-    "compute_Laue_Diffration": true,
+    "compute_Laue_Diffraction": true,
     "compute_xrd":  true,
     "full_trajectory_dump": true,
     "trajectory_output_format": ["lammps/dump"]

@@ -103,12 +103,17 @@ def get_interlayer_twist(data, cutoff, id_1, id_2, reference_particle_type=2, nu
 
         modifier_select = ExpressionSelectionModifier(expression=f"ParticleType=={reference_particle_type}")
         modifier_delete = DeleteSelectedModifier()
-        data.apply(modifier_select)
-        data.apply(modifier_delete)
+        data.data.apply(modifier_select)
+        data.data.apply(modifier_delete)
 
-        index_1 = np.argwhere(data.particles.identifiers[...]==id_1)
-        index_2 = np.argwhere(data.particles.identifiers[...]==id_2)
-        finder = CutoffNeighborFinder(cutoff, data)
+        index_1 = np.argwhere(data.data.particles["Particle Identifier"]==id_1)
+
+        assert data.data.particles["Particle Identifier"][index_1] == id_1
+
+        index_2 = np.argwhere(data.data.particles["Particle Identifier"]==id_2)
+        assert data.data.particles["Particle Identifier"][index_1] == id_1
+
+        finder = CutoffNeighborFinder(cutoff, data.data)
         layer_1_info = extract_layer_alignment(finder, index_1, num_iter)
         layer_2_info = extract_layer_alignment(finder, index_2, num_iter)
         

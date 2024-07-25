@@ -39,25 +39,25 @@ def AnalysisSubprocess(comm, input_params):
                 
                 if 'compute_twist' in input_params.keys():
                          
-                        twist_angle, err1, err2 = compute_twist.get_interlayer_twist(input_params['compute_twist']['cutoff'], \
+                        twist_angle, err1, err2 = compute_twist.get_interlayer_twist(data, input_params['compute_twist']['cutoff'], \
                                                                                      input_params['compute_twist']['id_1'], input_params['compute_twist']['id_2'], \
                                                                                      input_params['compute_twist']['reference_particle_type'], input_params['compute_twist']['num_iter'])
-                        with open(f'twist_{lmp_snapshot.timestep}', 'w') as file:
+                        with open(f'twist_{data.timestep}', 'w') as file:
                                 file.write(f'time-step twist-angle fit_err_layer_1 fit_err_layer_2\n')
-                                file.write(f'{lmp_snapshot.timestep} {twist_angle} {err1} {err2}')
+                                file.write(f'{data.timestep} {twist_angle} {err1} {err2}')
         
                 
-                if 'compute_Laue_Diffration' in input_params.keys():
+                # if 'compute_Laue_Diffraction' in input_params.keys():
                         
-                        if input_params['compute_Laue_Diffraction']:
-                                filetag = str(lmp_snapshot.timestep)
-                                compute_diffraction.get_laue_pattern(data, filetag)
+                #         if input_params['compute_Laue_Diffraction']:
+                #                 filetag = str(data.timestep)
+                #                 compute_diffraction.get_laue_pattern(data, filetag)
 
-                if 'compute_xrd' in input_params.keys():
+                # if 'compute_xrd' in input_params.keys():
 
-                        if input_params['compute_xrd']:
-                                filetag = str(lmp_snapshot.timestep)
-                                compute_diffraction.get_xrd_pattern(data, filetag)
+                #         if input_params['compute_xrd']:
+                #                 filetag = str(lmp_snapshot.timestep)
+                #                 compute_diffraction.get_xrd_pattern(data, filetag)
 
                         
                 stride+=1

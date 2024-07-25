@@ -33,8 +33,5 @@ fix relax all npt temp 300 300 100 x 0 0 10 y 0 0 10 xy 0 0 10
 timestep 0.5
 run 100 #50000
 unfix relax
-variable step equal "step"
-variable temp equal "temp"
-fix writer all print 1000 "${step} ${temp}" title "Step Temperature (K)" file temp_step.txt
 
 

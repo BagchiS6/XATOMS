@@ -4,7 +4,7 @@ import pickle
 
 def get_laue_pattern(data, fname):
         
-        ase_data = ovito_to_ase(data)
+        ase_data = ovito_to_ase(data.data)
         struc = AseAtomsAdaptor.get_structure(ase_data)
         
         import pymatgen.analysis.diffraction.tem as tem
@@ -17,7 +17,7 @@ def get_laue_pattern(data, fname):
 
 def get_xrd_pattern(data, fname):
 
-        ase_data = ovito_to_ase(data)
+        ase_data = ovito_to_ase(data.data)
         struc = AseAtomsAdaptor.get_structure(ase_data)
 
         from pymatgen.analysis.diffraction.xrd import XRDCalculator

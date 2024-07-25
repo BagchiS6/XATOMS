@@ -11,6 +11,11 @@ class OvitoCalculators():
                 self.data = DataCollection()
                 particles = self.data.create_particles(count=len(lmp_snapshot['coords']))
                 particles.create_property('Position', data=lmp_snapshot['coords'])
+                particles.create_property('Particle Type', data=lmp_snapshot['types'])
+                particles.create_property('Particle Identifier', data=np.arange(1, 1+len(lmp_snapshot['coords'])))
+                self.data.particles['Particle Type'][self.data.particles['Particle Type']==1].name = 'Mo'
+                self.data.particles['Particle Type'][self.data.particles['Particle Type']==2].name = 'S'
+
                 # Extract LAMMPS simulation cell geometry and boundary conditions.
 
                 lmp_box = lmp_snapshot['box_info'] #lmp.extract_box()
@@ -58,7 +63,7 @@ class OvitoCalculators():
         def dump_trajectories(self, export_formats=['lammps/dump'],atom_style='atomic'):
                 for format in export_formats:
                         if format=='lammps/dump':
-                                export_file(self.data, f'Ovito_dump.{self.timestep}.lmp', format=format, columns=["Particle Identifier", "Position.X", "Position.Y", "Position.Z"])
+                                export_file(self.data, f'Ovito_dump.{self.timestep}.lmp', format=format, columns=["Particle Identifier", "Particle Type", "Position.X", "Position.Y", "Position.Z"])
                         elif format=='lammps/data':
                                 export_file(self.data, f'Ovito_struc.{self.timestep}.lmp', format=format, atom_style=atom_style)
                         else:
