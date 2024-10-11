@@ -12,7 +12,7 @@ def MDSubprocess(split, comm, input_params):
 
         if input_params['run_on_gpus']:
 
-                lmp = lammps(comm=split,cmdargs=['-k', 'on', 'g', '4', '-sf','kk','-pk', 'kokkos','neigh','half','newton', 'off'])
+                lmp = lammps(comm=split,cmdargs=['-k', 'on', 'g', '8', '-sf','kk','-pk', 'kokkos','neigh','half','newton', 'off'])
         else:
                 lmp = lammps(comm=split) #,cmdargs=['-screen', 'off'])
 
