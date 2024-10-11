@@ -3,16 +3,21 @@ from lammps import lammps
 import numpy as np
 import math
 from XATOMS.utils import preprocessors
-
+import os
 
 def MDSubprocess(split, comm, input_params):
+
+        try:
+            gpus_per_node = os.environ.get('SLURM_GPUS_PER_NODE')
+        except:
+            gpus_per_node = 8
 
         me = comm.Get_rank()
         nprocs = comm.Get_size()
 
         if input_params['run_on_gpus']:
 
-                lmp = lammps(comm=split,cmdargs=['-k', 'on', 'g', '8', '-sf','kk','-pk', 'kokkos','neigh','half','newton', 'off'])
+                lmp = lammps(comm=split,cmdargs=['-k', 'on', 'g', str(gpus_per_node), '-sf','kk','-pk', 'kokkos','neigh','half','newton', 'off'])
         else:
                 lmp = lammps(comm=split) #,cmdargs=['-screen', 'off'])
 
