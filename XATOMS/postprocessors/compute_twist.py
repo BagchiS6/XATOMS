@@ -119,3 +119,106 @@ def get_interlayer_twist(data, cutoff, id_1, id_2, reference_particle_type=2, nu
         
         return compute_interlayer_angle(layer_1_info, layer_2_info)
 
+
+def extract_layer_grid_center_ids(data, metal_atom_type=1, grid_resolution=10, n_clusters=2):
+    """
+    Extract single center ID for each grid cell in layers
+    """
+    z_positions = data.data.particles.positions[...][:,2]
+    # Cluster based on z-positions
+    labels, _ = cluster_1d_vector(z_positions, n_clusters=n_clusters)
+    
+    def get_layer_data(layer_index):
+        layer_mask = (labels == layer_index) & (data.data.particles.particle_types == metal_atom_type)
+        layer_positions = data.data.particles.positions[...][layer_mask]
+        layer_ids = data.data.particles.identifiers[...][layer_mask]
+        return layer_positions, layer_ids
+    
+    # Extract layer positions and IDs
+    upper_layer_pos, upper_layer_ids = get_layer_data(0)
+    lower_layer_pos, lower_layer_ids = get_layer_data(1)
+    
+    def compute_grid_center_ids(positions, ids):
+        x_bins = np.linspace(positions[:, 0].min(), positions[:, 0].max(), grid_resolution+1)
+        y_bins = np.linspace(positions[:, 1].min(), positions[:, 1].max(), grid_resolution+1)
+        
+        grid_center_ids = []
+        for i in range(grid_resolution):
+            for j in range(grid_resolution):
+                # Mask for current grid cell
+                grid_mask = (
+                    (positions[:, 0] >= x_bins[i]) & (positions[:, 0] < x_bins[i+1]) &
+                    (positions[:, 1] >= y_bins[j]) & (positions[:, 1] < y_bins[j+1])
+                )
+                
+                cell_positions = positions[grid_mask]
+                cell_ids = ids[grid_mask]
+                
+                if len(cell_positions) > 0:
+                    # Find center point and its corresponding ID
+                    center_index = np.argmin(
+                        np.sum((cell_positions - cell_positions.mean(axis=0))**2, axis=1)
+                    )
+                    center_id = cell_ids[center_index]
+                    
+                    grid_center = {
+                        'x_range': (x_bins[i], x_bins[i+1]),
+                        'y_range': (y_bins[j], y_bins[j+1]),
+                        'center_id': center_id
+                    }
+                    grid_center_ids.append(grid_center)
+        
+        return grid_center_ids
+    
+    return {
+        'upper_layer_grid_center_ids': compute_grid_center_ids(upper_layer_pos, upper_layer_ids),
+        'lower_layer_grid_center_ids': compute_grid_center_ids(lower_layer_pos, lower_layer_ids)
+    }
+
+
+def find_nearest_center_point(points_x, points_y):
+    """
+    Find the point closest to the cluster center
+    
+    Args:
+        points (array-like): List of (x,y) coordinates
+    
+    Returns:
+        numpy.ndarray: Closest point to cluster center
+    """
+    from scipy.spatial.distance import cdist
+
+    points_array = np.column_stack((points_x, points_y))
+    
+    # Calculate cluster center
+    center = np.mean(points_array, axis=0)
+    
+    # Calculate distances from center
+    distances = cdist(points_array, [center])
+    
+    # Find index of point closest to center
+    nearest_point_index = np.argmin(distances)
+    
+    return points_array[nearest_point_index]
+
+
+def cluster_1d_vector(data, n_clusters=3):
+    """
+    Cluster a 1D vector using K-means algorithm
+    
+    Parameters:
+    data (array-like): 1D vector to be clustered
+    n_clusters (int): Number of clusters (default: 3)
+    
+    Returns:
+    tuple: (cluster labels, cluster centers)
+    """
+    from sklearn.cluster import KMeans
+    # Reshape data for sklearn
+    X = np.array(data).reshape(-1, 1)
+    
+    # Perform K-means clustering
+    kmeans = KMeans(n_clusters=n_clusters, random_state=42)
+    kmeans.fit(X)
+    
+    return kmeans.labels_, kmeans.cluster_centers_
