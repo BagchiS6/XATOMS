@@ -23,7 +23,11 @@ def get_probability(data, target_window):
 	cdf_values /= cdf_values[-1]
 
 	cdf_window = cdf_values[np.argwhere((x_values>=target_window[0]) & (x_values<=target_window[1]))]
-	
-	# compute probaility
-	prob = cdf_window[-1] - cdf_window[0]
+
+	try:
+		# compute probaility
+		prob = cdf_window[-1] - cdf_window[0]
+	except:
+		# for no samples in cdf_window
+		prob = np.array([0])
 	return prob
