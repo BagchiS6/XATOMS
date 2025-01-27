@@ -39,8 +39,8 @@ def AnalysisSubprocess(comm, input_params):
                 
                 if 'compute_twist' in input_params.keys():
                          
-                        twist_angle = compute_twist.get_interlayer_twist(data, input_params['compute_twist']['cutoff'], \
-                                                                                     input_params['compute_twist']['reference_particle_type'], grid_resolution=input_params['compute_twist']['grid_resolution'], num_iter=input_params['compute_twist']['num_iter'])
+                        twist_angle = compute_twist.get_interlayer_twist(data=data, cutoff=input_params['compute_twist']['cutoff'], \
+                                                                                     reference_particle_type=input_params['compute_twist']['reference_particle_type'], grid_resolution=input_params['compute_twist']['grid_resolution'], num_iter=input_params['compute_twist']['num_iter'])
                         with open(f'twist_{data.timestep}', 'w') as file:
                                 file.write(f'time-step twist-angle\n')
                                 file.write(f'{data.timestep} {twist_angle}')
@@ -50,10 +50,10 @@ def AnalysisSubprocess(comm, input_params):
                         assert input_params['compute_twist']['grid_resolution']>1, f"Grid resolution has to be greater than 1 for for a multigrid coverage analysis"
 
                         from XATOMS.utils.stat import get_probability
-                        prob = get_probability(twist_angle, input_params['compute_twist']['target_window'])
+                        prob = get_probability(twist_angle, target_window=input_params['compute_twist']['target_window'])
                         with open(f'coverage_probability_{data.timestep}', 'w') as file:
                                 file.write(f'time-step coverage_prob min_twist max_twist\n')
-                                file.write(f'{data.timestep} {prob} {input_params['compute_twist']['target_window'][0]} {input_params['compute_twist']['target_window'][1]}')
+                                file.write(f'{data.timestep} {prob} {input_params["compute_twist"]["target_window"][0]} {input_params["compute_twist"]["target_window"][1]}')
         
                 
                 # if 'compute_Laue_Diffraction' in input_params.keys():
