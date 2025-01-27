@@ -119,7 +119,7 @@ def get_interlayer_twist(data, cutoff, grid_resolution=1, reference_particle_typ
 
 		assert data.data.particles["Particle Identifier"][index_1] == id_1
 
-		index_2 = np.argwhere(data.particles["Particle Identifier"]==id_2)
+		index_2 = np.argwhere(data.data.particles["Particle Identifier"]==id_2)
 		assert data.data.particles["Particle Identifier"][index_1] == id_1
 
 		finder = CutoffNeighborFinder(cutoff, data.data)
